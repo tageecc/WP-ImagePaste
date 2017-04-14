@@ -1,6 +1,6 @@
 === Plugin Name ===
 Contributors: tagee
-Donate link: http://www.daxiawp.com
+Donate link: hhttps://blog.tagee.cc
 Tags: watermark, images, pictures, image paste, text watermark, upload, image watermark,
 Requires at least: 3.0
 Tested up to: 4.7.3
