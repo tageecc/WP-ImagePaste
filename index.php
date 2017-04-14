@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: WP-ImagePaste
-Plugin URI: 插件的介绍或更新地址
+Plugin URI: https://github.com/keniusuannai/WP-ImagePaste
 Description: 图片粘贴上传插件可以让你在WordPress编辑器里面直接粘贴上传文件
 Version: 1.0
 Author: 塔歌
