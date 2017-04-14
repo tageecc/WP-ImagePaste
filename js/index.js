@@ -1,32 +1,53 @@
-document.addEventListener('paste', function(e) {
-    console.log(111);
-    var pasteDate = e.clipboardData ? e.clipboardData.items[0] : null;
+setTimeout(function() {
+    var iframe = document.getElementById('content_ifr');
+    if (iframe) {
+        iframe.contentWindow.addEventListener('paste', function(e) {
 
-    if (!pasteDate) return false;
-    console.log(pasteDate);
-    //判断是否是粘贴图片
-    if (pasteDate.kind === 'file' && pasteDate.type.match(/^image\//i)) {
-        var that = this,
-            reader = new FileReader();
-        file = pasteDate.getAsFile();
+            var pasteDate = e.clipboardData ? e.clipboardData.items[0] : null;
 
-        //ajax上传图片
-        reader.onload = function(e) {
-            var xhr = new XMLHttpRequest();
-            var formData = new FormData();
+            if (!pasteDate) return false;
+            //判断是否是粘贴图片
+            if (pasteDate.kind === 'file' && pasteDate.type.match(/^image\//i)) {
+                var that = this,
+                    reader = new FileReader();
+                file = pasteDate.getAsFile();
 
-            xhr.open('POST', ajax_wp_imagepaste.uploadimage, true);
-            xhr.onload = function() {
-                console.log(xhr.responseText);
+                //ajax上传图片
+                reader.onload = function(e) {
+                    var xhr = new XMLHttpRequest();
+                    var formData = new FormData();
+
+                    xhr.open('POST', ajax_wp_imagepaste.uploadimage, true);
+                    xhr.onload = function() {
+                        var res = JSON.parse(xhr.responseText);
+
+                        var img = document.createElement('img');
+                        img.setAttribute('src', res.url);
+                        if (res.code === 100) {
+
+                            iframe.contentWindow.document.body.append(img);
+
+                        }
+                    }
+
+                    // this.result得到图片的base64 
+                    formData.append('file', this.result);
+                    formData.append('action', 'upload_image');;
+
+                    xhr.send(formData);
+                }
+                reader.readAsDataURL(file);
             }
-
-            // this.result得到图片的base64 (可以用作即时显示)
-            formData.append('file', this.result);
-            formData.append('action', 'upload_image');;
-            // that.innerHTML = '<img src="' + this.result + '" alt=""/>';
-
-            xhr.send(formData);
-        }
-        reader.readAsDataURL(file);
+        }, false);
     }
-}, false);
+
+
+    document.getElementById('compressed').addEventListener('click', function() {
+        document.getElementById("compress_num").disabled = !this.checked;
+    });
+    document.getElementById('watermark').addEventListener('click', function() {
+        document.getElementById("watermark_type").disabled = !this.checked;
+        document.getElementById("watermark_txt").disabled = !this.checked;
+    });
+
+}, 1000);
